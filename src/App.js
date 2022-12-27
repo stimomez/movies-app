@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Movies from "./components/Movies";
 
@@ -33,14 +32,7 @@ function App() {
     >
       <div ref={divRef}></div>
 
-      <HashRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={<Movies urlAPI={urlAPI} apiKey={apiKey} />}
-          />
-        </Routes>
-      </HashRouter>
+      <Movies urlAPI={urlAPI} apiKey={apiKey} />
       <footer
         className="d-flex justify-content-center align-items-center text-light fs-5"
         style={{
@@ -51,7 +43,7 @@ function App() {
           bottom: "0",
         }}
       >
-        © Stiven Morales Developers 
+        © Stiven Morales Developers
       </footer>
     </div>
   );

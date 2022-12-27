@@ -9,7 +9,7 @@ const MovieList = ({ urlAPI, apiKey }) => {
 
   useEffect(() => {
     request();
-  }, []);
+  });
   if (movieTitle === "") {
     setMovieTitle("Fast& Furious");
   }
@@ -26,10 +26,12 @@ const MovieList = ({ urlAPI, apiKey }) => {
       setTimeout(() => {
         setThereAreResults(false);
         setMovieTitle("Fast& Furious");
-        request();
+        axios
+          .get(`${urlAPI + apiKey}&s=${movieTitle}`)
+          .then((res) => setMovieList(res.data));
       }, 1000);
     }
-  }, [movieList]);
+  }, [movieList, movieTitle, urlAPI, apiKey]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
