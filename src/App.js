@@ -1,23 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useRef, useState } from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Movies from "./components/Movies";
 
 function App() {
+  const urlAPI = "http://www.omdbapi.com/?i=tt3896198&apikey=";
+  const apiKey = "b90b8526";
+  
+  const [backgroundPosition, setBackgroundPosition] = useState(0);
+
+    const divRef = useRef();
+    useEffect(() => {
+      const handleScroll = () => {
+        const div = divRef.current;
+        const { y } = div.getBoundingClientRect();
+        const position = y * 0.1 * -1;
+
+        setBackgroundPosition(`${position}`);
+      };
+
+      window.addEventListener("scroll", handleScroll);
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, [backgroundPosition]);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{ backgroundPosition: `0 ${backgroundPosition}px` }}
+      className="App"
+    >
+      <div ref={divRef}></div>
+
+      <HashRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<Movies urlAPI={urlAPI} apiKey={apiKey} />}
+          />
+        </Routes>
+      </HashRouter>
+      <footer
+        className="d-flex justify-content-center align-items-center text-light fs-5"
+        style={{
+          width: "100%",
+          height: "80px",
+          background: "gray",
+          position: "absolute",
+          bottom: "0",
+        }}
+      >
+        © Stiven Morales Developers 
+      </footer>
     </div>
   );
 }
