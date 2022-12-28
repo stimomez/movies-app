@@ -3,7 +3,7 @@ import "./App.css";
 import Movies from "./components/Movies";
 
 function App() {
-  const urlAPI = "http://www.omdbapi.com/?i=tt3896198&apikey=";
+  const urlAPI = "https://www.omdbapi.com/?i=tt3896198&apikey=";
   const apiKey = "b90b8526";
   
   const [backgroundPosition, setBackgroundPosition] = useState(0);
