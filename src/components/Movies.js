@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import NotResult from "./NotResult";
 
 const MovieList = ({ urlAPI, apiKey }) => {
@@ -7,18 +7,21 @@ const MovieList = ({ urlAPI, apiKey }) => {
   const [movieTitle, setMovieTitle] = useState("");
   const [thereAreResults, setThereAreResults] = useState(false);
 
-  useEffect(() => {
-    request();
-  });
   if (movieTitle === "") {
     setMovieTitle("Fast& Furious");
   }
+  useEffect(() => {
+    axios
+      .get(`${urlAPI + apiKey}&s=Fast& Furious`)
+      .then((res) => setMovieList(res.data));
+  }, [apiKey, urlAPI]);
 
-  const request = () => {
+  const request = useCallback(() => {
     axios
       .get(`${urlAPI + apiKey}&s=${movieTitle}`)
       .then((res) => setMovieList(res.data));
-  };
+  }, [apiKey, urlAPI, movieTitle]);
+
   useEffect(() => {
     if (movieList.Error) {
       setThereAreResults(true);
@@ -26,12 +29,10 @@ const MovieList = ({ urlAPI, apiKey }) => {
       setTimeout(() => {
         setThereAreResults(false);
         setMovieTitle("Fast& Furious");
-        axios
-          .get(`${urlAPI + apiKey}&s=${movieTitle}`)
-          .then((res) => setMovieList(res.data));
+        request();
       }, 1000);
     }
-  }, [movieList, movieTitle, urlAPI, apiKey]);
+  }, [movieList, request]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
